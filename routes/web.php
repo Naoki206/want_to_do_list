@@ -20,4 +20,6 @@ Route::get('/folders/{id}/tasks/create', 'TaskController@showCreateForm')->name(
 Route::post('/folders/{id}/tasks/create', 'TaskController@create');
 Route::get('/folders/{id}/tasks/{task_id}/edit', 'TaskController@showEditForm')->name('tasks.edit');
 Route::post('/folders/{id}/tasks/{task_id}/edit', 'TaskController@edit')->name('tasks.edit_confirm');
+Route::get('/', 'HomeController@index')->name('home');
+
 
