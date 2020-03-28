@@ -11,8 +11,10 @@ use App\Http\Requests\EditTask;
 class TaskController extends Controller
 {
     public function index(int $id) {
-        // すべてのフォルダを取得する
-    $folders = Folder::all();
+    // すべてのフォルダを取得する
+    // $folders = Folder::all();
+    // ユーザーのフォルダを取得する
+    $folders = Auth::user()->folders()->get();
 
     // 選ばれたフォルダを取得する
     $current_folder = Folder::find($id);

@@ -23,6 +23,19 @@ class HomeController extends Controller
      */
     public function index()
     {
+        //ログインユーザーを取得する
+        $folder = Auth::user()->folders()->first();
+        
+        //フォルダを作成したことがな場合はホーム画面にリダイレクト
+        if (is_null($folder)) {
+            return view('home');
+        }
+
+        // フォルダがあればそのフォルダのタスク一覧にリダイレクトする
+        return redirect()->route('tasks.index', [
+            'id' => $folder->id,
+        ]);
+        
         return view('home');
     }
 }
