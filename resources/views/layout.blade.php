@@ -13,7 +13,7 @@
     <nav class="my-navbar">
       <a class="my-navbar-brand" href="/">やりたいことリスト100</a>
       <div class="my-navbar-control">
-        @if(Auth::check())
+        @if(Auth::check())  
           <span class="my-navbar-item">ようこそ, {{ Auth::user()->name }}さん</span>
           ｜
           <a href="#" id="logout" class="my-navbar-item">ログアウト</a>
