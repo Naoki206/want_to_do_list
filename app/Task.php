@@ -1,54 +1,96 @@
 <?php
 
-namespace App;
+namespace App\Http\Controllers;
 
-use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
+use App\Folder;
+use App\Http\Requests\CreateTask;
+use App\Http\Requests\EditTask;
+use App\Task;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class Task extends Model
+class TaskController extends Controller
 {
     /**
-     * 状態定義
+     * タスク一覧
+     * @param Folder $folder
+     * @return \Illuminate\View\View
      */
-    const STATUS = [
-        1 => [ 'label' => '未着手', 'class' => 'label-danger' ],
-        2 => [ 'label' => '着手中', 'class' => 'label-info' ],
-        3 => [ 'label' => '完了', 'class' => '' ],
-    ];
+    public function index(Folder $folder)
+    {
+        // ユーザーのフォルダを取得する
+        $folders = Auth::user()->folders()->get();
+
+        // 選ばれたフォルダに紐づくタスクを取得する
+        $tasks = $folder->tasks()->get();
+
+        return view('tasks/index', [
+            'folders' => $folders,
+            'current_folder_id' => $folder->id,
+            'tasks' => $tasks,
+        ]);
+    }
 
     /**
-     * 状態のラベル
-     * @return string
+     * タスク作成フォーム
+     * @param Folder $folder
+     * @return \Illuminate\View\View
      */
-    public function getStatusLabelAttribute()
+    public function showCreateForm(Folder $folder)
     {
-        // 状態値
-        $status = $this->attributes['status'];
-
-        // 定義されていなければ空文字を返す
-        if (!isset(self::STATUS[$status])) {
-            return '';
-        }
-
-        return self::STATUS[$status]['label'];
+        return view('tasks/create', [
+            'folder_id' => $folder->id,
+        ]);
     }
 
-    public function getStatusClassAttribute()
+    /**
+     * タスク作成
+     * @param Folder $folder
+     * @param CreateTask $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function create(Folder $folder, CreateTask $request)
     {
-    // 状態値
-    $status = $this->attributes['status'];
+        $task = new Task();
+        $task->title = $request->title;
+        $task->due_date = $request->due_date;
 
-    // 定義されていなければ空文字を返す
-    if (!isset(self::STATUS[$status])) {
-        return '';
+        $folder->tasks()->save($task);
+
+        return redirect()->route('tasks.index', [
+            'id' => $folder->id,
+        ]);
     }
 
-    return self::STATUS[$status]['class'];
+    /**
+     * タスク編集フォーム
+     * @param Folder $folder
+     * @param Task $task
+     * @return \Illuminate\View\View
+     */
+    public function showEditForm(Folder $folder, Task $task)
+    {
+        return view('tasks/edit', [
+            'task' => $task,
+        ]);
     }
 
-    public function getFormattedDueDateAttribute()
+    /**
+     * タスク編集
+     * @param Folder $folder
+     * @param Task $task
+     * @param EditTask $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function edit(Folder $folder, Task $task, EditTask $request)
     {
-        return Carbon::createFromFormat('Y-m-d', $this->attributes['due_date'])
-            ->format('Y/m/d');
+        $task->title = $request->title;
+        $task->status = $request->status;
+        $task->due_date = $request->due_date;
+        $task->save();
+
+        return redirect()->route('tasks.index', [
+            'id' => $task->folder_id,
+        ]);
     }
 }
