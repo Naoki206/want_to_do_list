@@ -31,4 +31,6 @@ Route::group(['middleware' => 'auth'], function() {
     });
 });
 
+Route::mixin(new \Laravel\Ui\AuthRouteMethods());
+Route::auth(['verify' => true]);
 Auth::routes();
