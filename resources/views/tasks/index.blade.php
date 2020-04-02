@@ -28,6 +28,7 @@
           <div class="panel-heading">内容</div>
           <div class="panel-body">
             <div class="text-right">
+              {{-- TODO: --}}
               <a href="{{ route('tasks.create', ['folder' => $folder]) }}" class="btn btn-default btn-block">
                 追加する
               </a>
