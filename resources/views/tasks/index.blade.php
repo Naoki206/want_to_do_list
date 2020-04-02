@@ -18,7 +18,7 @@
                   class="list-group-item {{ $current_folder_id === $folder->id ? 'active' : '' }}"
               >
                 {{ $folder->title }}
-              </a>
+              </a>       
             @endforeach
           </div>
         </nav>
@@ -51,7 +51,7 @@
                   <span class="label {{ $task->status_class }}">{{ $task->status_label }}</span>
                 </td>
                 <td>{{ $task->formatted_due_date }}</td>
-                <td><a href="{{ route('tasks.edit', ['folder' => $folder, 'task' => $task]) }}">編集</a></td>
+                <td><a href="{{ route('tasks.edit', ['folder' => $current_folder, 'task' => $task]) }}">編集</a></td>
               </tr>
             @endforeach
             </tbody>
