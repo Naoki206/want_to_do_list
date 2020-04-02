@@ -74,6 +74,7 @@ class TaskController extends Controller
         $this->checkRelation($folder, $task);
         return view('tasks/edit', [
             'task' => $task,
+            'folder' => $folder,
         ]);
     }
 
