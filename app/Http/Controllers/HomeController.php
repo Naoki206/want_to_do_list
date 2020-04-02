@@ -36,7 +36,5 @@ class HomeController extends Controller
         return redirect()->route('tasks.index', [
             'folder' => $folder,
         ]);
-
-        return view('home');
     }
 }
