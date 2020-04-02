@@ -29,7 +29,7 @@
           <div class="panel-body">
             <div class="text-right">
               {{-- TODO: --}}
-              <a href="{{ route('tasks.create', ['folder' => $folder]) }}" class="btn btn-default btn-block">
+              <a href="{{ route('tasks.create', ['folder' => $current_folder]) }}" class="btn btn-default btn-block">
                 追加する
               </a>
             </div>

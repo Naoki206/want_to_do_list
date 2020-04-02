@@ -27,6 +27,7 @@ class TaskController extends Controller
         return view('tasks/index', [
             'folders' => $folders,
             'current_folder_id' => $folder->id,
+            'current_folder' => $folder,
             'tasks' => $tasks,
         ]);
     }
@@ -39,7 +40,7 @@ class TaskController extends Controller
     public function showCreateForm(Folder $folder)
     {
         return view('tasks/create', [
-            'folder_id' => $folder->id,
+            'folder' => $folder,
         ]);
     }
 
